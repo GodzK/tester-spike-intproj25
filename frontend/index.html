@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fetch Study Plans</title>
 </head>
 <body>
-    <h1>Hello World</h1>
+  <h1>Study Plans</h1>
+  <ul id="plans"></ul>
+
+  <script>
+    const apiUrl = "/intproj25/PL-1/api/study-plans";
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(data => {
+        const list = document.getElementById("plans");
+        list.innerHTML = ""; 
+        data.forEach(plan => {
+          const item = document.createElement("li");
+          item.textContent = `${plan.plan_code} - ${plan.name_eng} (${plan.name_th})`;
+          list.appendChild(item);
+        });
+      })
+      .catch(error => {
+        console.error("Fetch error:", error);
+        const list = document.getElementById("plans");
+        list.innerHTML = "<li style='color:red;'>Failed to load data</li>";
+      });
+  </script>
 </body>
 </html>
