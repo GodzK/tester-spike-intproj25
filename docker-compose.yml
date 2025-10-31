@@ -21,7 +21,7 @@ services:
       MYSQL_ROOT_PASSWORD: pl1password
       MYSQL_DATABASE: mydb
     ports:
-      - "3307:3306" 
+      - "3307:3306"
     networks:
       - appnet
 
