@@ -17,34 +17,28 @@ function connectWithRetry() {
 
   db.connect(err => {
     if (err) {
-      console.error("Database connection failed, retrying in 5 seconds...");
+      console.error("retrying in 5 seconds");
+      console.error(err.message);
       setTimeout(connectWithRetry, 5000);
     } else {
-      console.log("Connected to database");
+      console.log("Connected to database 'mydb'");
 
       app.get("/", (req, res) => res.send("Backend is running successfully!"));
 
-      app.get("/students", (req, res) => {
-        db.query("SELECT * FROM students", (err, results) => {
+      app.get("/study-plans", (req, res) => {
+        db.query("SELECT * FROM study_plan", (err, results) => {
           if (err) return res.status(500).json({ error: err.message });
           res.json(results);
         });
       });
 
-      app.post("/students", (req, res) => {
-        const { name, email } = req.body;
-        if (!name || !email)
-          return res.status(400).json({ error: "Please provide name and email" });
-
-        db.query(
-          "INSERT INTO students (name, email) VALUES (?, ?)",
-          [name, email],
-          (err, result) => {
+      app.get("/student-plans", (req, res) => {
+        db.query("SELECT * FROM students_plans", (err, results) => {
             if (err) return res.status(500).json({ error: err.message });
-            res.json({ message: "Student added successfully", id: result.insertId });
-          }
-        );
+            res.json(results);
+        });
       });
+
     }
   });
 }
@@ -52,5 +46,6 @@ function connectWithRetry() {
 connectWithRetry();
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
+
