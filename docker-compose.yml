@@ -24,6 +24,9 @@ services:
       - "3307:3306"
     networks:
       - appnet
+    volumes:
+      - ./db_init/init.sql:/docker-entrypoint-initdb.d/init.sql
+
 
   proxy:
     image: nginx:alpine
