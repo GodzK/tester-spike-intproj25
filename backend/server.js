@@ -34,7 +34,8 @@ app.get("/", (req, res) => res.send("Backend is running!"));
 app.get("/study-plans", (req, res) => {
   db.query("SELECT * FROM study_plan", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8'); 
+    res.json(results); // ส่ง JSON ออกไป
   });
 });
 
