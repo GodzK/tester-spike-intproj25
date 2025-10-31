@@ -6,7 +6,6 @@ const PORT = 5000;
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 const db = mysql.createConnection({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
@@ -25,7 +24,6 @@ function connectWithRetry() {
     }
   });
 }
-
 connectWithRetry();
 
 app.get("/", (req, res) => res.send("Backend is running successfully!"));
