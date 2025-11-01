@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASS || "pl1password",
   database: process.env.DB_NAME || "mydb",
-  charset: 'utf8mb4'
+  collation: 'utf8mb4_unicode_ci'
 });
 
 function connectWithRetry() {
@@ -23,7 +23,6 @@ function connectWithRetry() {
     setTimeout(connectWithRetry, 5000);
   } else {
     console.log("Connected to database 'mydb'");
-    db.query("SET NAMES utf8mb4");
   }
 });
 
