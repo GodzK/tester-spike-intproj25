@@ -8,12 +8,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "pl1password",
-  database: process.env.DB_NAME || "mydb",
-  collation: 'utf8mb4_unicode_ci'
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "pl1password",
+  database: process.env.DB_NAME || "mydb",
+  charset: 'utf8mb4' 
 });
 
 function connectWithRetry() {
