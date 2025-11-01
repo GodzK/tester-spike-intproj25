@@ -18,14 +18,15 @@ const db = mysql.createConnection({
 
 function connectWithRetry() {
   db.connect(err => {
-    if (err) {
-      console.error("Database connection failed:", err.message);
-      console.log("Retrying in 5 seconds...");
-      setTimeout(connectWithRetry, 5000);
-    } else {
-      console.log("Connected to database 'mydb'");
-    }
-  });
+  if (err) {
+    console.error("Database connection failed:", err.message);
+    setTimeout(connectWithRetry, 5000);
+  } else {
+    console.log("Connected to database 'mydb'");
+    db.query("SET NAMES utf8mb4");
+  }
+});
+
 }
 connectWithRetry();
 
