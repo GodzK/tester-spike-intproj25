@@ -9,14 +9,15 @@ services:
       MYSQL_ROOT_PASSWORD: pl1password
       MYSQL_DATABASE: mydb
     ports:
-      - "3307:3306"  # host:container
+      - "3307:3306"
     volumes:
-      - ./db_init/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db_init:/docker-entrypoint-initdb.d
     networks:
       - appnet
 
   backend:
     build: ./backend
+    container_name: backend
     environment:
       DB_HOST: db
       DB_USER: root
@@ -31,6 +32,7 @@ services:
 
   frontend:
     build: ./frontend
+    container_name: frontend
     ports:
       - "80:80"
     depends_on:
