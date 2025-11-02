@@ -1,28 +1,32 @@
 const express = require("express");
-const mysql = require("mysql2/promise");
-const cors = require("cors");
-
+const mysql = require("mysql2");
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-const dbConfig = {
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "pl1password",
-  database: process.env.DB_NAME || "mydb",
-  charset: "utf8mb4"
-};
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  charset: "utf8mb4",
+});
 
-app.get("/api/study-plans", async (req, res) => {
-  try {
-    const conn = await mysql.createConnection(dbConfig);
-    const [rows] = await conn.query("SELECT * FROM study_plan");
-    await conn.end();
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+db.connect(err => {
+  if (err) {
+    console.error("DB connection failed:", err);
+    process.exit(1);
   }
+  console.log("Connected to MySQL");
+});
+
+app.get("/api/study-plans", (req, res) => {
+  db.query("SELECT * FROM study_plans", (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: "Database query failed" });
+      return;
+    }
+    res.json(rows);
+  });
 });
 
 app.listen(3000, () => console.log("Backend running on port 3000"));
