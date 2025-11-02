@@ -1,5 +1,4 @@
-version: "3.8"
-
+version: "3.9"
 services:
   db:
     image: mysql:8.0
@@ -7,29 +6,28 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: pl1password
       MYSQL_DATABASE: mydb
-      TZ: Asia/Bangkok
     volumes:
-      - ./db_init/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
       - "3307:3306"
 
   backend:
     build: ./backend
     container_name: tester_backend
-    depends_on:
-      - db
     environment:
       DB_HOST: db
       DB_USER: root
       DB_PASS: pl1password
       DB_NAME: mydb
+    depends_on:
+      - db
     ports:
       - "3000:3000"
 
   frontend:
     build: ./frontend
     container_name: tester_frontend
-    depends_on:
-      - backend
     ports:
       - "8080:80"
+    depends_on:
+      - backend
