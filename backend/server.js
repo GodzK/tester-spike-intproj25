@@ -43,4 +43,5 @@ app.get("/intproj25/PL-1/api/study-plans", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Backend listening on port 3000"));
+app.listen(3000, '0.0.0.0', () => console.log("Server running"));
+
