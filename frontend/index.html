@@ -1,39 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fetch Study Plans</title>
+  <meta charset="utf-8">
+  <title>Study Plans</title>
 </head>
 <body>
-  <h1>Study Plans (Data from DB)</h1>
-  <ul id="plans"></ul>
+  <h1>รายการแผนการเรียน</h1>
+  <ul id="list"></ul>
 
   <script>
-    const apiUrl = "/intproj25/PL-1/api/study-plans";
-    
-    fetch(apiUrl)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok: " + response.statusText);
-        }
-        return response.json(); 
-      })
-      .then(data => {
-        const list = document.getElementById("plans");
-        list.innerHTML = ""; 
-        data.forEach(plan => {
-          const item = document.createElement("li");
-          // แสดงผลข้อมูลภาษาไทย
-          item.textContent = `${plan.plan_code} - ${plan.name_eng} (${plan.name_th})`;
-          list.appendChild(item);
-        });
-      })
-      .catch(error => {
-        console.error("Fetch error:", error);
-        const list = document.getElementById("plans");
-        list.innerHTML = "<li style='color:red;'>Failed to load data. " + error.message + "</li>";
+  fetch("/intproj25/PL-1/api/study-plans")
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById("list");
+      data.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.plan_code} - ${item.name_th} (${item.name_eng})`;
+        list.appendChild(li);
       });
-  </script>
+    })
+    .catch(console.error);
+</script>
+
 </body>
 </html>
